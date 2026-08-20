@@ -1,16 +1,13 @@
-import os
-
-from dotenv import load_dotenv
 from fastapi import FastAPI
 
-load_dotenv()
+from app.core.config import APP_NAME, ENVIRONMENT
 
-app = FastAPI()
+app = FastAPI(title=APP_NAME)
 
 
 @app.get("/")
 def home():
     return {
         "message": "StudyMind backend is running!",
-        "environment": os.getenv("ENVIRONMENT")
+        "environment": ENVIRONMENT
     }
