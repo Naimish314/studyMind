@@ -2,6 +2,7 @@ from pathlib import Path
 from uuid import uuid4
 from fastapi import APIRouter, File, HTTPException, UploadFile
 from app.services.pdf_extractor import extract_pdf_text
+from app.services.text_cleaner import clean_text
 
 router = APIRouter()
 UPLOAD_DIR = Path("backend/uploads")
@@ -26,8 +27,10 @@ async def upload_document(file: UploadFile = File(...)):
 
     extracted_text = extract_pdf_text(file_path)
 
+    cleaned_text = clean_text(extracted_text)   
+
     text_path = document_dir / "extracted.txt"
-    text_path.write_text(extracted_text, encoding="utf-8")
+    text_path.write_text(cleaned_text, encoding="utf-8")
 
     return {
         "message": "Document uploaded successfully",
